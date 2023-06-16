@@ -25,16 +25,16 @@
       </tags>
   </entry>
   <entry>
-    <title>Cross Compile and Native Build on OpenBMC</title>
+    <title>How to Cross Compile and Native Build on OpenBMC</title>
     <url>/2023/06/16/Cross-Compile-and-Native-Build-on-OpenBMC/</url>
-    <content><![CDATA[<h1 id="Cross-Compile-and-Native-Build-on-OpenBMC"><a href="#Cross-Compile-and-Native-Build-on-OpenBMC" class="headerlink" title="Cross Compile and Native Build on OpenBMC"></a>Cross Compile and Native Build on OpenBMC</h1><h2 id="Cross-Compile"><a href="#Cross-Compile" class="headerlink" title="Cross Compile"></a>Cross Compile</h2><p>To cross-compile on OpenBMC, follow these steps:</p>
-<h3 id="Source-the-setup-script"><a href="#Source-the-setup-script" class="headerlink" title="Source the setup script"></a>Source the <code>setup</code> script</h3><p>Start by sourcing the <code>setup</code> script for your target hardware. You can find the script on the <a href="https://github.com/openbmc/openbmc#3-target-your-hardware">OpenBMC GitHub repository</a>. Execute the following command in your terminal:</p>
+    <content><![CDATA[<h1 id="Cross-Compile"><a href="#Cross-Compile" class="headerlink" title="Cross Compile"></a>Cross Compile</h1><p>To cross-compile on OpenBMC, follow these steps:</p>
+<h2 id="Source-the-setup-script"><a href="#Source-the-setup-script" class="headerlink" title="Source the setup script"></a>Source the <code>setup</code> script</h2><p>Start by sourcing the <code>setup</code> script for your target hardware. You can find the script on the <a href="https://github.com/openbmc/openbmc#3-target-your-hardware">OpenBMC GitHub repository</a>. Execute the following command in your terminal:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. setup romulus</span><br></pre></td></tr></table></figure>
 
-<h3 id="Build-the-SDK"><a href="#Build-the-SDK" class="headerlink" title="Build the SDK"></a>Build the SDK</h3><p>Next, build the Software Development Kit (SDK) using the <code>bitbake</code> command. Specify your target as an argument. For example:</p>
+<h2 id="Build-the-SDK"><a href="#Build-the-SDK" class="headerlink" title="Build the SDK"></a>Build the SDK</h2><p>Next, build the Software Development Kit (SDK) using the <code>bitbake</code> command. Specify your target as an argument. For example:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">albertlin@thinkbook:$ bitbake -c populate_sdk obmc-phosphor-image</span><br></pre></td></tr></table></figure>
 
-<h3 id="Install-the-SDK"><a href="#Install-the-SDK" class="headerlink" title="Install the SDK"></a>Install the SDK</h3><p>Once the SDK is built, you need to install it. Follow these steps:</p>
+<h2 id="Install-the-SDK"><a href="#Install-the-SDK" class="headerlink" title="Install the SDK"></a>Install the SDK</h2><p>Once the SDK is built, you need to install it. Follow these steps:</p>
 <ol>
 <li><p>Create a folder where you want to install the SDK. For instance, let’s use <code>/usr/local/openbmc</code>.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">albertlin@thinkbook:$ sudo <span class="built_in">mkdir</span> /usr/local/openbmc</span><br></pre></td></tr></table></figure>
@@ -56,10 +56,10 @@
 <li><p>Verify that the installation was successful by checking the contents of the installation directory:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">albertlin@thinkbook:$ <span class="built_in">ls</span> -al /usr/local/openbmc/</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="Using-the-SDK"><a href="#Using-the-SDK" class="headerlink" title="Using the SDK"></a>Using the SDK</h3><p>Before compiling your code, you need to set up the SDK environment. Execute the following command to source the environment setup script:</p>
+<h2 id="Using-the-SDK"><a href="#Using-the-SDK" class="headerlink" title="Using the SDK"></a>Using the SDK</h2><p>Before compiling your code, you need to set up the SDK environment. Execute the following command to source the environment setup script:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">albertlin@thinkbook:$ . /usr/local/openbmc/environment-setup-armv7ahf-vfpv4d16-openbmc-linux-gnueabi</span><br></pre></td></tr></table></figure>
 
-<h3 id="Compile"><a href="#Compile" class="headerlink" title="Compile"></a>Compile</h3><p>Now you’re ready to compile your code. Here’s an example of compiling a simple “hello” program:</p>
+<h2 id="Compile"><a href="#Compile" class="headerlink" title="Compile"></a>Compile</h2><p>Now you’re ready to compile your code. Here’s an example of compiling a simple “hello” program:</p>
 <ol>
 <li><p>Create a directory for your project and navigate into it.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">albertlin@thinkbook:$ <span class="built_in">mkdir</span> hello</span><br><span class="line">albertlin@thinkbook:$ <span class="built_in">cd</span> hello</span><br></pre></td></tr></table></figure>
@@ -80,7 +80,7 @@
 <li><p>Once the build is complete, you can find the compiled binary in the <code>build</code> directory. You can copy it to your OpenBMC target for execution using the <code>scp</code> command:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">albertlin@thinkbook:hello$ scp build/hello root@192.168.0.196:/tmp</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="BMC-Side"><a href="#BMC-Side" class="headerlink" title="BMC Side"></a>BMC Side</h3><p>To execute the binary on your BMC target, follow these steps:</p>
+<h2 id="BMC-Side"><a href="#BMC-Side" class="headerlink" title="BMC Side"></a>BMC Side</h2><p>To execute the binary on your BMC target, follow these steps:</p>
 <ol>
 <li><p>Connect to your BMC target using SSH.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh root@192.168.0.196</span><br></pre></td></tr></table></figure>
