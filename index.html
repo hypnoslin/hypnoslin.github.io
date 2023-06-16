@@ -195,6 +195,143 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/16/Cross-Compile-and-Native-Build-on-OpenBMC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Albert Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cataholic">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/16/Cross-Compile-and-Native-Build-on-OpenBMC/" class="post-title-link" itemprop="url">Cross Compile and Native Build on OpenBMC</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-16 23:03:54 / Modified: 23:06:28" itemprop="dateCreated datePublished" datetime="2023-06-16T23:03:54+08:00">2023-06-16</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/06/16/Cross-Compile-and-Native-Build-on-OpenBMC/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/16/Cross-Compile-and-Native-Build-on-OpenBMC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Cross-Compile-and-Native-Build-on-OpenBMC"><a href="#Cross-Compile-and-Native-Build-on-OpenBMC" class="headerlink" title="Cross Compile and Native Build on OpenBMC"></a>Cross Compile and Native Build on OpenBMC</h1><h2 id="Cross-Compile"><a href="#Cross-Compile" class="headerlink" title="Cross Compile"></a>Cross Compile</h2><p>To cross-compile on OpenBMC, follow these steps:</p>
+<h3 id="Source-the-setup-script"><a href="#Source-the-setup-script" class="headerlink" title="Source the setup script"></a>Source the <code>setup</code> script</h3><p>Start by sourcing the <code>setup</code> script for your target hardware. You can find the script on the <a target="_blank" rel="noopener" href="https://github.com/openbmc/openbmc#3-target-your-hardware">OpenBMC GitHub repository</a>. Execute the following command in your terminal:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. setup romulus</span><br></pre></td></tr></table></figure>
+
+<h3 id="Build-the-SDK"><a href="#Build-the-SDK" class="headerlink" title="Build the SDK"></a>Build the SDK</h3><p>Next, build the Software Development Kit (SDK) using the <code>bitbake</code> command. Specify your target as an argument. For example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:$ bitbake -c populate_sdk obmc-phosphor-image</span><br></pre></td></tr></table></figure>
+
+<h3 id="Install-the-SDK"><a href="#Install-the-SDK" class="headerlink" title="Install the SDK"></a>Install the SDK</h3><p>Once the SDK is built, you need to install it. Follow these steps:</p>
+<ol>
+<li><p>Create a folder where you want to install the SDK. For instance, let’s use <code>/usr/local/openbmc</code>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:$ sudo <span class="built_in">mkdir</span> /usr/local/openbmc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Navigate to the directory containing the SDK installation files.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:$ <span class="built_in">cd</span> ./tmp/deploy/sdk/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Run the SDK installation script using the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:$ ./oecore-x86_64-armv7ahf-vfpv4d16-toolchain-nodistro.0.sh</span><br><span class="line">Phosphor OpenBMC (Phosphor OpenBMC Project Reference Distro) SDK installer version nodistro.0</span><br><span class="line">=============================================================================================</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The installation script will prompt you to enter the target directory for the SDK. Specify <code>/usr/local/openbmc</code> when prompted:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enter target directory <span class="keyword">for</span> SDK (default: /usr/local/oecore-x86_64): /usr/local/openbmc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Confirm the installation by typing ‘y’ when asked if you want to proceed:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">You are about to install the SDK to <span class="string">&quot;/usr/local/openbmc&quot;</span>. Proceed [Y/n]? y</span><br><span class="line">Extracting SDK....................................................................................................................................<span class="keyword">done</span></span><br><span class="line">Setting it up...done</span><br><span class="line">SDK has been successfully <span class="built_in">set</span> up and is ready to be used.</span><br><span class="line">Each time you wish to use the SDK <span class="keyword">in</span> a new shell session, you need to <span class="built_in">source</span> the environment setup script e.g.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The SDK will be extracted and set up in the specified directory.</p>
+</li>
+<li><p>Verify that the installation was successful by checking the contents of the installation directory:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:$ <span class="built_in">ls</span> -al /usr/local/openbmc/</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Using-the-SDK"><a href="#Using-the-SDK" class="headerlink" title="Using the SDK"></a>Using the SDK</h3><p>Before compiling your code, you need to set up the SDK environment. Execute the following command to source the environment setup script:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:$ . /usr/local/openbmc/environment-setup-armv7ahf-vfpv4d16-openbmc-linux-gnueabi</span><br></pre></td></tr></table></figure>
+
+<h3 id="Compile"><a href="#Compile" class="headerlink" title="Compile"></a>Compile</h3><p>Now you’re ready to compile your code. Here’s an example of compiling a simple “hello” program:</p>
+<ol>
+<li><p>Create a directory for your project and navigate into it.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:$ <span class="built_in">mkdir</span> hello</span><br><span class="line">albertlin@thinkbook:$ <span class="built_in">cd</span> hello</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Create a C source file named <code>hello.c</code> and a Meson build file named <code>meson.build</code> with the following content:</p>
+<p><code>hello.c</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello OpenBMC\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>meson.build</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">project(&#x27;hello&#x27;, &#x27;c&#x27;)</span><br><span class="line"></span><br><span class="line">executable(&#x27;hello&#x27;, &#x27;hello.c&#x27;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Generate the build files using Meson:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:hello$ meson build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Build the project using Ninja:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:hello$ ninja -C build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Once the build is complete, you can find the compiled binary in the <code>build</code> directory. You can copy it to your OpenBMC target for execution using the <code>scp</code> command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">albertlin@thinkbook:hello$ scp build/hello root@192.168.0.196:/tmp</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="BMC-Side"><a href="#BMC-Side" class="headerlink" title="BMC Side"></a>BMC Side</h3><p>To execute the binary on your BMC target, follow these steps:</p>
+<ol>
+<li><p>Connect to your BMC target using SSH.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@192.168.0.196</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Navigate to the directory where you copied the binary.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@romulus:/tmp<span class="comment"># cd /tmp</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Run the binary.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@romulus:/tmp<span class="comment"># ./hello</span></span><br><span class="line">Hello OpenBMC</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>That’s it! You have successfully cross-compiled and executed a program on OpenBMC.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/13/C-Design/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -426,7 +563,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
