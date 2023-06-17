@@ -195,6 +195,109 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/18/How-to-test-performance-of-webui-vue-of-OpenBMC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Albert Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cataholic">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/18/How-to-test-performance-of-webui-vue-of-OpenBMC/" class="post-title-link" itemprop="url">Testing OpenBMC WebUI Performance with Sitespeed.io</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-18 00:34:01 / Modified: 01:07:15" itemprop="dateCreated datePublished" datetime="2023-06-18T00:34:01+08:00">2023-06-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenBMC/" itemprop="url" rel="index"><span itemprop="name">OpenBMC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/06/18/How-to-test-performance-of-webui-vue-of-OpenBMC/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/18/How-to-test-performance-of-webui-vue-of-OpenBMC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>OpenBMC utilizes <a target="_blank" rel="noopener" href="https://github.com/openbmc/webui-vue">webui-vue</a> as its front-end, which is a single-page application (SPA). Testing the web performance of SPAs can be challenging with traditional tools like Lighthouse, which are typically used for testing static websites. However, Sitespeed.io provides mechanisms to test SPAs, making it a suitable choice for testing the OpenBMC web pages.</p>
+<h1 id="Sitespeed-io"><a href="#Sitespeed-io" class="headerlink" title="Sitespeed.io"></a>Sitespeed.io</h1><p>Sitespeed.io is a powerful tool that allows you to perform web performance testing on SPAs. It offers the ability to measure various performance metrics and provides detailed insights into the performance of your web application.</p>
+<h2 id="Writing-a-Testing-Script"><a href="#Writing-a-Testing-Script" class="headerlink" title="Writing a Testing Script"></a>Writing a Testing Script</h2><p>To demonstrate the performance testing of the OpenBMC <a target="_blank" rel="noopener" href="https://github.com/openbmc/webui-vue">webui-vue</a> login process, we can refer to the example provided by Sitespeed.io for testing SPAs. You can find the example performance test script for Grafana <a target="_blank" rel="noopener" href="https://www.sitespeed.io/documentation/sitespeed.io/spa/#example-performance-test-grafana">here</a>. Additionally, the Sitespeed.io documentation provides more information on scripting and available APIs, which you can find <a target="_blank" rel="noopener" href="https://www.sitespeed.io/documentation/sitespeed.io/scripting/">here</a>.</p>
+<p>For this article, let’s focus on testing the performance of the OpenBMC login process using the provided script <code>openbmc.js</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="keyword">async</span> <span class="keyword">function</span>(<span class="params">context, commands</span>) &#123;</span><br><span class="line">    <span class="keyword">await</span> commands.<span class="property">measure</span>.<span class="title function_">start</span>(<span class="string">&#x27;https://192.168.0.196/#/login&#x27;</span>, <span class="string">&#x27;login page&#x27;</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> commands.<span class="property">addText</span>.<span class="title function_">byId</span>(<span class="string">&#x27;root&#x27;</span>, <span class="string">&#x27;username&#x27;</span>);</span><br><span class="line">        <span class="keyword">await</span> commands.<span class="property">addText</span>.<span class="title function_">byId</span>(<span class="string">&#x27;0penBmc&#x27;</span>, <span class="string">&#x27;password&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Start the measurement and give it the alias &#x27;login&#x27;</span></span><br><span class="line">        <span class="comment">// The alias will be used when the metrics are sent to</span></span><br><span class="line">        <span class="comment">// Graphite/InfluxDB</span></span><br><span class="line">        <span class="keyword">await</span> commands.<span class="property">measure</span>.<span class="title function_">start</span>(<span class="string">&#x27;login to dashboard&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Find the submit button, click it, and wait for the </span></span><br><span class="line">        <span class="comment">// page load to complete on the next loaded URL </span></span><br><span class="line">        <span class="keyword">await</span> commands.<span class="property">click</span>.<span class="title function_">byXpath</span>(<span class="string">&#x27;//*[@id=&quot;app&quot;]/main/div/div[1]/div/form/button&#x27;</span>);</span><br><span class="line">        <span class="keyword">await</span> commands.<span class="title function_">navigate</span>(<span class="string">&#x27;https://192.168.0.196/#/&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Stop and collect the metrics</span></span><br><span class="line">        <span class="keyword">return</span> commands.<span class="property">measure</span>.<span class="title function_">stop</span>();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="comment">// If the GUI changes and a link is not there,</span></span><br><span class="line">        <span class="comment">// the click commands will throw an error.</span></span><br><span class="line">        <span class="comment">// sitespeed.io will catch, log, and rethrow</span></span><br><span class="line">        <span class="comment">// and you can choose to handle the error</span></span><br><span class="line">    &#125;   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Make sure to adjust the URLs and element selectors in the script to match your OpenBMC setup.</p>
+<p>With this script, you can measure the performance of the OpenBMC login process using Sitespeed.io. It captures metrics such as page load time, resource timings, and other performance-related data.</p>
+<h2 id="Running-the-Performance-Test"><a href="#Running-the-Performance-Test" class="headerlink" title="Running the Performance Test"></a>Running the Performance Test</h2><p>To run the performance test on the OpenBMC web pages using the <code>openbmc.js</code> script, you can execute the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --<span class="built_in">rm</span> -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/sitespeed.io&quot;</span> sitespeedio/sitespeed.io:27.3.0 openbmc.js --spa --multi -n 1</span><br></pre></td></tr></table></figure>
+
+<p>In this command, the <code>--spa</code> flag indicates that the web page being tested is a single-page application, while the <code>--multi</code> flag enables multiple iterations of the test. The <code>-n 1</code> argument determines the number of testing iterations to perform. Adjust the value of <code>-n</code> as per your requirements.</p>
+<p>For more information on how to customize and extend the performance test, you can refer to the example provided by Sitespeed.io for testing SPAs <a target="_blank" rel="noopener" href="https://www.sitespeed.io/documentation/sitespeed.io/spa/#example-performance-test-grafana">here</a>.</p>
+<h2 id="Video-Recording"><a href="#Video-Recording" class="headerlink" title="Video Recording"></a>Video Recording</h2><p>If you want to have a video recording of the script’s interaction during the performance test, you can specify the <code>--browsertime.videoParams.debug</code> flag. This flag generates a video in the test report, allowing you to visualize the user flow and interactions. Here’s an example command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --<span class="built_in">rm</span> -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/sitespeed.io&quot;</span> sitespeedio/sitespeed.io:27.3.0 openbmc.js --spa --multi --browsertime.videoParams.debug</span><br></pre></td></tr></table></figure>
+
+<p>Make sure to adjust the command and script parameters based on your specific requirements and OpenBMC setup.</p>
+<p>By running these commands, you can perform performance testing on the OpenBMC web pages using Sitespeed.io, generate performance metrics, and optionally capture a video recording of the user interaction.</p>
+<h2 id="Viewing-the-Report"><a href="#Viewing-the-Report" class="headerlink" title="Viewing the Report"></a>Viewing the Report</h2><p>Once the performance testing commands have been executed, you can find the generated report in the <code>sitespeed-result</code> folder. The report is presented in the form of an <code>index.html</code> file, which serves as the entry point to access the performance results.</p>
+<p>To view the report, navigate to the <code>sitespeed-result</code> folder and open the <code>index.html</code> file in a web browser. This will launch the report and provide you with detailed information about the performance of the OpenBMC web pages.</p>
+<p>The report generated by Sitespeed.io includes various metrics such as page load times, resource sizes, network requests, and more. It offers insights into the performance characteristics of the web application, allowing you to identify areas for improvement and optimization.</p>
+<p>Make sure to explore the different sections of the report to gain a comprehensive understanding of the performance test results.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/16/Cross-Compile-and-Native-Build-on-OpenBMC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -451,7 +554,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
