@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Cambria:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hypnoslin.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"top","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="The PCA954X is a family of I2C multiplexers&#x2F;switches that allow you to control multiple I2C devices using a single I2C bus. In this section, we will explore how to manually switch between differe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Manually Switch PCA954X I2C Mux Channels">
+<meta property="og:url" content="https://hypnoslin.github.io/2023/06/18/How-to-manually-switch-i2c-mux/index.html">
+<meta property="og:site_name" content="Cataholic">
+<meta property="og:description" content="The PCA954X is a family of I2C multiplexers&#x2F;switches that allow you to control multiple I2C devices using a single I2C bus. In this section, we will explore how to manually switch between differe">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-06-18T10:31:48.000Z">
+<meta property="article:modified_time" content="2023-06-18T11:38:16.317Z">
+<meta property="article:author" content="Albert Lin">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hypnoslin.github.io/2023/06/18/How-to-manually-switch-i2c-mux/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>How to Manually Switch PCA954X I2C Mux Channels | Cataholic</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0K7NVG4ZCN"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0K7NVG4ZCN');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Cataholic</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about-the-author">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About the Author</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/hypnoslin" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/18/How-to-manually-switch-i2c-mux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Albert Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cataholic">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          How to Manually Switch PCA954X I2C Mux Channels
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-18 18:31:48 / Modified: 19:38:16" itemprop="dateCreated datePublished" datetime="2023-06-18T18:31:48+08:00">2023-06-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/06/18/How-to-manually-switch-i2c-mux/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/18/How-to-manually-switch-i2c-mux/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>The PCA954X is a family of I2C multiplexers&#x2F;switches that allow you to control multiple I2C devices using a single I2C bus. In this section, we will explore how to manually switch between different channels of the PCA954X I2C mux.</p>
+<h1 id="Using-the-i2c-tools"><a href="#Using-the-i2c-tools" class="headerlink" title="Using the i2c-tools"></a>Using the i2c-tools</h1><p>The i2c-tools package provides a set of command-line tools for interacting with I2C devices in Linux. We will be using three main tools: <code>i2cdetect</code>, <code>i2cdump</code>, and <code>i2cset</code>. Make sure you have the i2c-tools package installed on your system before proceeding.</p>
+<h2 id="i2cdetect"><a href="#i2cdetect" class="headerlink" title="i2cdetect"></a>i2cdetect</h2><p>The <code>i2cdetect</code> tool allows you to scan the I2C bus and detect devices connected to it. It provides a grid view with addresses and corresponding symbols indicating the presence of I2C devices. Here’s an example output:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 4</span></span><br><span class="line">     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f</span><br><span class="line">00:                         -- -- -- -- -- -- -- --</span><br><span class="line">10: UU -- -- -- -- -- 16 -- -- -- -- -- -- -- -- --</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: -- -- -- -- -- -- -- --</span><br></pre></td></tr></table></figure>
+
+<p>The symbols used in the output have the following meanings:</p>
+<ul>
+<li>“–”: The address was probed, but no chip responded.</li>
+<li>“UU”: Probing was skipped because this address is currently in use by a driver, suggesting the presence of a chip.</li>
+<li>Hexadecimal address: Indicates the presence of a chip at that address.</li>
+</ul>
+<h2 id="i2cdump"><a href="#i2cdump" class="headerlink" title="i2cdump"></a>i2cdump</h2><p>The <code>i2cdump</code> tool allows you to read and display the content of registers on an I2C device. You need to provide the bus number and the address of the device you want to dump. Here’s an example usage:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cdump -y 4 0x16</span></span><br><span class="line">No size specified (using byte-data access)</span><br><span class="line">     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef</span><br><span class="line">00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">10: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">20: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">30: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">40: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">50: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">60: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">70: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br></pre></td></tr></table></figure>
+
+<p>This output displays the content of the registers starting from address 0x00.</p>
+<h2 id="i2cset"><a href="#i2cset" class="headerlink" title="i2cset"></a>i2cset</h2><p>The <code>i2cset</code> tool allows you to set the content of registers on an I2C device. You need to provide the bus number, the address of the device, and the data you want to write. Here’s an example usage:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cset -y 4 0x70 0x00 0x04</span></span><br></pre></td></tr></table></figure>
+
+<p>In this example, we are writing the value 0x04 to register address 0x00 of the device at address 0x70 on bus 4.</p>
+<h1 id="PCA954X-I2C-Mux"><a href="#PCA954X-I2C-Mux" class="headerlink" title="PCA954X I2C Mux"></a>PCA954X I2C Mux</h1><p>The PCA954X is a family of I2C multiplexers&#x2F;switches. You can find the datasheet for PCA9545A&#x2F;B&#x2F;C <a target="_blank" rel="noopener" href="https://www.nxp.com/docs/en/data-sheet/PCA9545A_45B_45C.pdf">here</a>.</p>
+<h2 id="Changing-DTS-through-Yocto"><a href="#Changing-DTS-through-Yocto" class="headerlink" title="Changing DTS through Yocto"></a>Changing DTS through Yocto</h2><p>If you’re using Yocto to build your Linux image, you can customize the Linux kernel configuration by following these steps:</p>
+<ol>
+<li><p>Open a terminal and navigate to your Yocto build directory.</p>
+</li>
+<li><p>Run the following command to enter the Linux kernel menuconfig:</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitbake -c menuconfig virtual/kernel</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Make the necessary changes in the menuconfig interface. Once you’re</li>
+</ol>
+<p> done, save and exit.</p>
+<ol start="4">
+<li>Additionally, you can generate a defconfig file by running the following command:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitbake -c savedefconfig virtual/kernel</span><br></pre></td></tr></table></figure>
+<h2 id="Writing-I2C-Mux-Device-Tree-Bindings"><a href="#Writing-I2C-Mux-Device-Tree-Bindings" class="headerlink" title="Writing I2C Mux Device Tree Bindings"></a>Writing I2C Mux Device Tree Bindings</h2><p>To configure the PCA954X I2C mux in the device tree, you can refer to the following documentation:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.txt">i2c-mux-pca954x.txt</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/devicetree/bindings/i2c/i2c-mux.txt">i2c-mux.txt</a></li>
+</ul>
+<p>You can also check out an example of using the PCA954X I2C mux in the device tree in the <a target="_blank" rel="noopener" href="https://github.com/openbmc/linux/blob/dev-5.15/arch/arm/boot/dts/aspeed-bmc-facebook-minipack.dts">aspeed-bmc-facebook-minipack.dts</a> file.</p>
+<h2 id="Using-new-device-and-delete-device"><a href="#Using-new-device-and-delete-device" class="headerlink" title="Using new_device and delete_device"></a>Using <code>new_device</code> and <code>delete_device</code></h2><p>To add or remove I2C devices dynamically, you can use the <code>new_device</code> and <code>delete_device</code> attributes in the sysfs interface. Here’s an example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a300.i2c-bus/i2c-5/i2c-16/i2c-20<span class="comment"># ls</span></span><br><span class="line">20-0049        20-0056        delete_device  i2c-dev        mux_device     name           new_device     of_node        power          subsystem      uevent</span><br><span class="line">root@albertlin:/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a300.i2c-bus/i2c-5/i2c-16/i2c-20<span class="comment"># echo &quot;0x0049&quot; &gt; delete_device</span></span><br><span class="line">[  424.372524] i2c i2c-20: delete_device: Deleting device tmp75 at 0x49</span><br><span class="line">root@albertlin:/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a300.i2c-bus/i2c-5/i2c-16/i2c-20<span class="comment"># echo &quot;tmp75 0x49&quot; &gt; new_device</span></span><br><span class="line">[825617.903108] lm75 20-0049: hwmon2: sensor <span class="string">&#x27;tmp75&#x27;</span></span><br><span class="line">[825617.908643] i2c i2c-20: new_device: Instantiated device tmp75 at 0x49</span><br></pre></td></tr></table></figure>
+
+<p>In the above example, <code>delete_device</code> is used to remove the device with address 0x49, and <code>new_device</code> is used to add a device named “tmp75” at address 0x49.</p>
+<h2 id="Reading-Kernel-Configuration-at-Runtime"><a href="#Reading-Kernel-Configuration-at-Runtime" class="headerlink" title="Reading Kernel Configuration at Runtime"></a>Reading Kernel Configuration at Runtime</h2><p>To view the kernel configuration at runtime, you can use the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcat /proc/config.gz</span><br></pre></td></tr></table></figure>
+
+<p>This command will display the configuration options of the running kernel.</p>
+<h1 id="Switching-PCA954X-Channels"><a href="#Switching-PCA954X-Channels" class="headerlink" title="Switching PCA954X Channels"></a>Switching PCA954X Channels</h1><p>To manually switch the channel of an I2C mux, you can use the <code>i2cset</code> command with the appropriate parameters. Here’s an example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i2cset -y 5 0x70 0x01  <span class="comment"># Switch to channel 0</span></span><br><span class="line">i2cset -y 5 0x70 0x02  <span class="comment"># Switch to channel 1</span></span><br><span class="line">i2cset -y 5 0x70 0x04  <span class="comment"># Switch to channel 2</span></span><br></pre></td></tr></table></figure>
+
+<p>In the above commands, <code>-y 5</code> specifies the I2C bus number (5 in this case), <code>0x70</code> is the address of the I2C mux device, and <code>0x01</code>, <code>0x02</code>, and <code>0x04</code> are the channel values representing channel 0, channel 1, and channel 2, respectively.</p>
+<p>Here’s an example of how you can use these commands:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cset -y 5 0x70 1  # Switch to channel 0</span></span><br><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 5  # Scan for devices on the I2C bus</span></span><br><span class="line"> 0 1 2 3 4 5 6 7 8 9 a b c d e f</span><br><span class="line">00: -- UU -- -- -- -- -- --</span><br><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: 70 71 -- -- -- -- -- --</span><br><span class="line">root@albertlin:~<span class="comment"># i2cset -y 5 0x71 0  # Switch to channel 1</span></span><br><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 5  # Scan for devices on the I2C bus</span></span><br><span class="line"> 0 1 2 3 4 5 6 7 8 9 a b c d e f</span><br><span class="line">00: -- UU -- -- -- -- -- --</span><br><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- 49 -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- 56 -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: 70 71 -- -- -- -- -- --</span><br><span class="line">root@albertlin:~<span class="comment"># i2cset -y 5 0x71 2  # Switch to channel 2</span></span><br><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 5  # Scan for devices on the I2C bus</span></span><br><span class="line"> 0 1 2 3 4 5 6 7 8 9 a b c d e f</span><br><span class="line">00: -- UU -- -- -- -- -- --</span><br><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 1f</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line"></span><br><span class="line"> -- -- --</span><br><span class="line">30: -- -- 32 -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- 61 -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: 70 71 -- -- -- -- -- --</span><br></pre></td></tr></table></figure>
+
+<p>In the above example, we first switch to channel 0 by using <code>i2cset -y 5 0x70 1</code>, then we scan for devices on the I2C bus using <code>i2cdetect -y 5</code>. After that, we switch to channel 1 with <code>i2cset -y 5 0x71 0</code> and perform another scan using <code>i2cdetect -y 5</code>. Finally, we switch to channel 2 with <code>i2cset -y 5 0x71 2</code> and perform a scan again.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/18/How-to-test-performance-of-webui-vue-of-OpenBMC/" rel="prev" title="Testing OpenBMC WebUI Performance with Sitespeed.io">
+      <i class="fa fa-chevron-left"></i> Testing OpenBMC WebUI Performance with Sitespeed.io
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Using-the-i2c-tools"><span class="nav-number">1.</span> <span class="nav-text">Using the i2c-tools</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#i2cdetect"><span class="nav-number">1.1.</span> <span class="nav-text">i2cdetect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2cdump"><span class="nav-number">1.2.</span> <span class="nav-text">i2cdump</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i2cset"><span class="nav-number">1.3.</span> <span class="nav-text">i2cset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PCA954X-I2C-Mux"><span class="nav-number">2.</span> <span class="nav-text">PCA954X I2C Mux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Changing-DTS-through-Yocto"><span class="nav-number">2.1.</span> <span class="nav-text">Changing DTS through Yocto</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Writing-I2C-Mux-Device-Tree-Bindings"><span class="nav-number">2.2.</span> <span class="nav-text">Writing I2C Mux Device Tree Bindings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-new-device-and-delete-device"><span class="nav-number">2.3.</span> <span class="nav-text">Using new_device and delete_device</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reading-Kernel-Configuration-at-Runtime"><span class="nav-number">2.4.</span> <span class="nav-text">Reading Kernel Configuration at Runtime</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Switching-PCA954X-Channels"><span class="nav-number">3.</span> <span class="nav-text">Switching PCA954X Channels</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Albert Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Albert Lin</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://albert-lins-blog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hypnoslin.github.io/2023/06/18/How-to-manually-switch-i2c-mux/";
+    this.page.identifier = "2023/06/18/How-to-manually-switch-i2c-mux/";
+    this.page.title = "How to Manually Switch PCA954X I2C Mux Channels";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://albert-lins-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

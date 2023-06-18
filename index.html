@@ -195,6 +195,146 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/18/How-to-manually-switch-i2c-mux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Albert Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cataholic">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/18/How-to-manually-switch-i2c-mux/" class="post-title-link" itemprop="url">How to Manually Switch PCA954X I2C Mux Channels</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-18 18:31:48 / Modified: 19:38:16" itemprop="dateCreated datePublished" datetime="2023-06-18T18:31:48+08:00">2023-06-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/06/18/How-to-manually-switch-i2c-mux/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/18/How-to-manually-switch-i2c-mux/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>The PCA954X is a family of I2C multiplexers&#x2F;switches that allow you to control multiple I2C devices using a single I2C bus. In this section, we will explore how to manually switch between different channels of the PCA954X I2C mux.</p>
+<h1 id="Using-the-i2c-tools"><a href="#Using-the-i2c-tools" class="headerlink" title="Using the i2c-tools"></a>Using the i2c-tools</h1><p>The i2c-tools package provides a set of command-line tools for interacting with I2C devices in Linux. We will be using three main tools: <code>i2cdetect</code>, <code>i2cdump</code>, and <code>i2cset</code>. Make sure you have the i2c-tools package installed on your system before proceeding.</p>
+<h2 id="i2cdetect"><a href="#i2cdetect" class="headerlink" title="i2cdetect"></a>i2cdetect</h2><p>The <code>i2cdetect</code> tool allows you to scan the I2C bus and detect devices connected to it. It provides a grid view with addresses and corresponding symbols indicating the presence of I2C devices. Here’s an example output:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 4</span></span><br><span class="line">     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f</span><br><span class="line">00:                         -- -- -- -- -- -- -- --</span><br><span class="line">10: UU -- -- -- -- -- 16 -- -- -- -- -- -- -- -- --</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: -- -- -- -- -- -- -- --</span><br></pre></td></tr></table></figure>
+
+<p>The symbols used in the output have the following meanings:</p>
+<ul>
+<li>“–”: The address was probed, but no chip responded.</li>
+<li>“UU”: Probing was skipped because this address is currently in use by a driver, suggesting the presence of a chip.</li>
+<li>Hexadecimal address: Indicates the presence of a chip at that address.</li>
+</ul>
+<h2 id="i2cdump"><a href="#i2cdump" class="headerlink" title="i2cdump"></a>i2cdump</h2><p>The <code>i2cdump</code> tool allows you to read and display the content of registers on an I2C device. You need to provide the bus number and the address of the device you want to dump. Here’s an example usage:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cdump -y 4 0x16</span></span><br><span class="line">No size specified (using byte-data access)</span><br><span class="line">     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef</span><br><span class="line">00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">10: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">20: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">30: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">40: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">50: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">60: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">70: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br><span class="line">f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................</span><br></pre></td></tr></table></figure>
+
+<p>This output displays the content of the registers starting from address 0x00.</p>
+<h2 id="i2cset"><a href="#i2cset" class="headerlink" title="i2cset"></a>i2cset</h2><p>The <code>i2cset</code> tool allows you to set the content of registers on an I2C device. You need to provide the bus number, the address of the device, and the data you want to write. Here’s an example usage:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cset -y 4 0x70 0x00 0x04</span></span><br></pre></td></tr></table></figure>
+
+<p>In this example, we are writing the value 0x04 to register address 0x00 of the device at address 0x70 on bus 4.</p>
+<h1 id="PCA954X-I2C-Mux"><a href="#PCA954X-I2C-Mux" class="headerlink" title="PCA954X I2C Mux"></a>PCA954X I2C Mux</h1><p>The PCA954X is a family of I2C multiplexers&#x2F;switches. You can find the datasheet for PCA9545A&#x2F;B&#x2F;C <a target="_blank" rel="noopener" href="https://www.nxp.com/docs/en/data-sheet/PCA9545A_45B_45C.pdf">here</a>.</p>
+<h2 id="Changing-DTS-through-Yocto"><a href="#Changing-DTS-through-Yocto" class="headerlink" title="Changing DTS through Yocto"></a>Changing DTS through Yocto</h2><p>If you’re using Yocto to build your Linux image, you can customize the Linux kernel configuration by following these steps:</p>
+<ol>
+<li><p>Open a terminal and navigate to your Yocto build directory.</p>
+</li>
+<li><p>Run the following command to enter the Linux kernel menuconfig:</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitbake -c menuconfig virtual/kernel</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Make the necessary changes in the menuconfig interface. Once you’re</li>
+</ol>
+<p> done, save and exit.</p>
+<ol start="4">
+<li>Additionally, you can generate a defconfig file by running the following command:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bitbake -c savedefconfig virtual/kernel</span><br></pre></td></tr></table></figure>
+<h2 id="Writing-I2C-Mux-Device-Tree-Bindings"><a href="#Writing-I2C-Mux-Device-Tree-Bindings" class="headerlink" title="Writing I2C Mux Device Tree Bindings"></a>Writing I2C Mux Device Tree Bindings</h2><p>To configure the PCA954X I2C mux in the device tree, you can refer to the following documentation:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.txt">i2c-mux-pca954x.txt</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/devicetree/bindings/i2c/i2c-mux.txt">i2c-mux.txt</a></li>
+</ul>
+<p>You can also check out an example of using the PCA954X I2C mux in the device tree in the <a target="_blank" rel="noopener" href="https://github.com/openbmc/linux/blob/dev-5.15/arch/arm/boot/dts/aspeed-bmc-facebook-minipack.dts">aspeed-bmc-facebook-minipack.dts</a> file.</p>
+<h2 id="Using-new-device-and-delete-device"><a href="#Using-new-device-and-delete-device" class="headerlink" title="Using new_device and delete_device"></a>Using <code>new_device</code> and <code>delete_device</code></h2><p>To add or remove I2C devices dynamically, you can use the <code>new_device</code> and <code>delete_device</code> attributes in the sysfs interface. Here’s an example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a300.i2c-bus/i2c-5/i2c-16/i2c-20<span class="comment"># ls</span></span><br><span class="line">20-0049        20-0056        delete_device  i2c-dev        mux_device     name           new_device     of_node        power          subsystem      uevent</span><br><span class="line">root@albertlin:/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a300.i2c-bus/i2c-5/i2c-16/i2c-20<span class="comment"># echo &quot;0x0049&quot; &gt; delete_device</span></span><br><span class="line">[  424.372524] i2c i2c-20: delete_device: Deleting device tmp75 at 0x49</span><br><span class="line">root@albertlin:/sys/devices/platform/ahb/ahb:apb/ahb:apb:bus@1e78a000/1e78a300.i2c-bus/i2c-5/i2c-16/i2c-20<span class="comment"># echo &quot;tmp75 0x49&quot; &gt; new_device</span></span><br><span class="line">[825617.903108] lm75 20-0049: hwmon2: sensor <span class="string">&#x27;tmp75&#x27;</span></span><br><span class="line">[825617.908643] i2c i2c-20: new_device: Instantiated device tmp75 at 0x49</span><br></pre></td></tr></table></figure>
+
+<p>In the above example, <code>delete_device</code> is used to remove the device with address 0x49, and <code>new_device</code> is used to add a device named “tmp75” at address 0x49.</p>
+<h2 id="Reading-Kernel-Configuration-at-Runtime"><a href="#Reading-Kernel-Configuration-at-Runtime" class="headerlink" title="Reading Kernel Configuration at Runtime"></a>Reading Kernel Configuration at Runtime</h2><p>To view the kernel configuration at runtime, you can use the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcat /proc/config.gz</span><br></pre></td></tr></table></figure>
+
+<p>This command will display the configuration options of the running kernel.</p>
+<h1 id="Switching-PCA954X-Channels"><a href="#Switching-PCA954X-Channels" class="headerlink" title="Switching PCA954X Channels"></a>Switching PCA954X Channels</h1><p>To manually switch the channel of an I2C mux, you can use the <code>i2cset</code> command with the appropriate parameters. Here’s an example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i2cset -y 5 0x70 0x01  <span class="comment"># Switch to channel 0</span></span><br><span class="line">i2cset -y 5 0x70 0x02  <span class="comment"># Switch to channel 1</span></span><br><span class="line">i2cset -y 5 0x70 0x04  <span class="comment"># Switch to channel 2</span></span><br></pre></td></tr></table></figure>
+
+<p>In the above commands, <code>-y 5</code> specifies the I2C bus number (5 in this case), <code>0x70</code> is the address of the I2C mux device, and <code>0x01</code>, <code>0x02</code>, and <code>0x04</code> are the channel values representing channel 0, channel 1, and channel 2, respectively.</p>
+<p>Here’s an example of how you can use these commands:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">root@albertlin:~<span class="comment"># i2cset -y 5 0x70 1  # Switch to channel 0</span></span><br><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 5  # Scan for devices on the I2C bus</span></span><br><span class="line"> 0 1 2 3 4 5 6 7 8 9 a b c d e f</span><br><span class="line">00: -- UU -- -- -- -- -- --</span><br><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: 70 71 -- -- -- -- -- --</span><br><span class="line">root@albertlin:~<span class="comment"># i2cset -y 5 0x71 0  # Switch to channel 1</span></span><br><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 5  # Scan for devices on the I2C bus</span></span><br><span class="line"> 0 1 2 3 4 5 6 7 8 9 a b c d e f</span><br><span class="line">00: -- UU -- -- -- -- -- --</span><br><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- 49 -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- 56 -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: 70 71 -- -- -- -- -- --</span><br><span class="line">root@albertlin:~<span class="comment"># i2cset -y 5 0x71 2  # Switch to channel 2</span></span><br><span class="line">root@albertlin:~<span class="comment"># i2cdetect -y 5  # Scan for devices on the I2C bus</span></span><br><span class="line"> 0 1 2 3 4 5 6 7 8 9 a b c d e f</span><br><span class="line">00: -- UU -- -- -- -- -- --</span><br><span class="line">10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 1f</span><br><span class="line">20: -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line"></span><br><span class="line"> -- -- --</span><br><span class="line">30: -- -- 32 -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">60: -- 61 -- -- -- -- -- -- -- -- -- -- -- -- -- --</span><br><span class="line">70: 70 71 -- -- -- -- -- --</span><br></pre></td></tr></table></figure>
+
+<p>In the above example, we first switch to channel 0 by using <code>i2cset -y 5 0x70 1</code>, then we scan for devices on the I2C bus using <code>i2cdetect -y 5</code>. After that, we switch to channel 1 with <code>i2cset -y 5 0x71 0</code> and perform another scan using <code>i2cdetect -y 5</code>. Finally, we switch to channel 2 with <code>i2cset -y 5 0x71 2</code> and perform a scan again.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/18/How-to-test-performance-of-webui-vue-of-OpenBMC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -554,20 +694,20 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
