@@ -222,4 +222,24 @@
         <tag>Linux</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Understanding the Difference Between Reference and Non-Reference Members in a Class</title>
+    <url>/2023/06/19/Difference-between-var-and-reference-var-in-class-member/</url>
+    <content><![CDATA[<p>When declaring a member variable in a class, you have the option to declare it as a <strong>reference</strong> or as a <strong>non-reference</strong>. Understanding the difference between these two types is crucial, as it affects how they are initialized within the class. </p>
+<p>Let’s dive into the dissimilarities between reference and non-reference members through an illustrative example:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span>&amp; ref_val, <span class="type">int</span> non_ref_val) : <span class="built_in">ref_val_</span>(ref_val), <span class="built_in">non_ref_val_</span>(non_ref_val) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span>&amp; ref_val_;</span><br><span class="line">    <span class="type">int</span> non_ref_val_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">42</span>; </span><br><span class="line">    <span class="function">MyClass <span class="title">my_class</span><span class="params">(x, <span class="number">10</span>)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the given example, we define a class called <code>MyClass</code> featuring two member variables: <code>ref_val_</code>, a reference to an integer, and <code>non_ref_val_</code>, a regular integer.</p>
+<p>The key disparity arises in the constructor. The <code>ref_val_</code> member is initialized in the constructor’s initialization list using the argument <code>ref_val</code>, which is a reference to an integer. This step is essential since a reference must be initialized upon declaration.</p>
+<p>One practical application of using reference members is when we want to <strong>associate an external object with the class without initializing it inside the class constructor</strong>. By initializing the reference member outside the class, we can control the lifetime and initialization of the referenced object separately.</p>
+<p>However, it’s crucial to ensure that the lifetime of the referenced object extends beyond the lifetime of the object holding the reference. In this case, if <code>x</code> is going to be used in <code>MyClass</code>, you should ensure that <code>x</code> remains in scope for the entire duration of <code>my_class</code>‘s lifetime. Failure to do so may lead to undefined behavior.</p>
+<p>Understanding the difference between reference and non-reference members helps you make informed decisions when designing your classes and ensures the proper usage and management of references within your codebase. It provides flexibility in managing object lifetimes and improves the overall design of your C++ classes.</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
 </search>

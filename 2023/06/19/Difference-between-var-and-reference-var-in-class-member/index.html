@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"hypnoslin.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"top","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="https://hypnoslin.github.io/categories/index.html">
+  <meta name="description" content="When declaring a member variable in a class, you have the option to declare it as a reference or as a non-reference. Understanding the difference between these two types is crucial, as it affects how">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understanding the Difference Between Reference and Non-Reference Members in a Class">
+<meta property="og:url" content="https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/index.html">
 <meta property="og:site_name" content="Cataholic">
+<meta property="og:description" content="When declaring a member variable in a class, you have the option to declare it as a reference or as a non-reference. Understanding the difference between these two types is crucial, as it affects how">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-06-14T16:46:42.000Z">
-<meta property="article:modified_time" content="2023-06-14T16:52:49.996Z">
+<meta property="article:published_time" content="2023-06-19T15:26:32.000Z">
+<meta property="article:modified_time" content="2023-06-19T16:09:49.588Z">
 <meta property="article:author" content="Albert Lin">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hypnoslin.github.io/categories/">
+<link rel="canonical" href="https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/">
 
 
 <script id="page-configurations">
@@ -38,13 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>categories | Cataholic
-</title>
+  <title>Understanding the Difference Between Reference and Non-Reference Members in a Class | Cataholic</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0K7NVG4ZCN"></script>
     <script>
@@ -191,55 +193,138 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="en">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Albert Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cataholic">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Understanding the Difference Between Reference and Non-Reference Members in a Class
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
 
-<div class="post-meta">
+              <time title="Created: 2023-06-19 23:26:32" itemprop="dateCreated datePublished" datetime="2023-06-19T23:26:32+08:00">2023-06-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-20 00:09:49" itemprop="dateModified" datetime="2023-06-20T00:09:49+08:00">2023-06-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/06/19/Difference-between-var-and-reference-var-in-class-member/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/19/Difference-between-var-and-reference-var-in-class-member/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
   
 
-</div>
+        </div>
+      </header>
 
-</header>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              3 categories in total
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OpenBMC/">OpenBMC</a><span class="category-list-count">2</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
+        <p>When declaring a member variable in a class, you have the option to declare it as a <strong>reference</strong> or as a <strong>non-reference</strong>. Understanding the difference between these two types is crucial, as it affects how they are initialized within the class. </p>
+<p>Let’s dive into the dissimilarities between reference and non-reference members through an illustrative example:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span>&amp; ref_val, <span class="type">int</span> non_ref_val) : <span class="built_in">ref_val_</span>(ref_val), <span class="built_in">non_ref_val_</span>(non_ref_val) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span>&amp; ref_val_;</span><br><span class="line">    <span class="type">int</span> non_ref_val_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">42</span>; </span><br><span class="line">    <span class="function">MyClass <span class="title">my_class</span><span class="params">(x, <span class="number">10</span>)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the given example, we define a class called <code>MyClass</code> featuring two member variables: <code>ref_val_</code>, a reference to an integer, and <code>non_ref_val_</code>, a regular integer.</p>
+<p>The key disparity arises in the constructor. The <code>ref_val_</code> member is initialized in the constructor’s initialization list using the argument <code>ref_val</code>, which is a reference to an integer. This step is essential since a reference must be initialized upon declaration.</p>
+<p>One practical application of using reference members is when we want to <strong>associate an external object with the class without initializing it inside the class constructor</strong>. By initializing the reference member outside the class, we can control the lifetime and initialization of the referenced object separately.</p>
+<p>However, it’s crucial to ensure that the lifetime of the referenced object extends beyond the lifetime of the object holding the reference. In this case, if <code>x</code> is going to be used in <code>MyClass</code>, you should ensure that <code>x</code> remains in scope for the entire duration of <code>my_class</code>‘s lifetime. Failure to do so may lead to undefined behavior.</p>
+<p>Understanding the difference between reference and non-reference members helps you make informed decisions when designing your classes and ensures the proper usage and management of references within your codebase. It provides flexibility in managing object lifetimes and improves the overall design of your C++ classes.</p>
+
     </div>
-    
 
     
     
     
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/18/How-to-manually-switch-i2c-mux/" rel="prev" title="How to Manually Switch PCA954X I2C Mux Channels">
+      <i class="fa fa-chevron-left"></i> How to Manually Switch PCA954X I2C Mux Channels
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -431,6 +516,26 @@
   }
   // defer loading until the whole page loading is completed
   window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/";
+    this.page.identifier = "2023/06/19/Difference-between-var-and-reference-var-in-class-member/";
+    this.page.title = "Understanding the Difference Between Reference and Non-Reference Members in a Class";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://albert-lins-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
 </script>
 
 </body>
