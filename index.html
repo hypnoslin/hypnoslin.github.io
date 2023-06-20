@@ -195,6 +195,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Albert Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cataholic">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/" class="post-title-link" itemprop="url">Understanding the Usage of the & Operator in C++</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-20 00:00:00 / Modified: 23:52:02" itemprop="dateCreated datePublished" datetime="2023-06-20T00:00:00+08:00">2023-06-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>When working with the <code>&amp;</code> operator in the C language, besides bitwise, its usage is limited to taking the address of a specified variable. However, in C++, the <code>&amp;</code> operator serves two distinct purposes: taking the address of a variable and declaring a reference variable. To understand its purpose, it is crucial to consider the context in which the operator is used.</p>
+<h2 id="Taking-the-Address-of-a-Variable"><a href="#Taking-the-Address-of-a-Variable" class="headerlink" title="Taking the Address of a Variable"></a>Taking the Address of a Variable</h2><p>In C++, the <code>&amp;</code> operator allows you to access the memory location where a variable is stored when used to take the address of a variable. Consider the following example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span>* px = &amp;x; <span class="comment">// &amp; used to take the address of x</span></span><br></pre></td></tr></table></figure>
+
+<p>In this case, the <code>&amp;</code> operator is employed to obtain the address of the variable <code>x</code> and assign it to the pointer variable <code>px</code>.</p>
+<h2 id="Declaring-a-Reference-Variable"><a href="#Declaring-a-Reference-Variable" class="headerlink" title="Declaring a Reference Variable"></a>Declaring a Reference Variable</h2><p>In addition to taking addresses, the <code>&amp;</code> operator can also be used to declare a reference variable. A reference provides an alternative name or alias for an existing variable. Take a look at this example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span>&amp; rx = x; <span class="comment">// &amp; used to declare the reference variable rx</span></span><br></pre></td></tr></table></figure>
+
+<p>Here, the <code>&amp;</code> operator is utilized to declare the reference variable <code>rx</code>, which refers to the existing variable <code>x</code>. Any changes made to <code>rx</code> will directly affect the original variable <code>x</code>.</p>
+<h1 id="Capturing-References-in-Lambdas"><a href="#Capturing-References-in-Lambdas" class="headerlink" title="Capturing References in Lambdas"></a>Capturing References in Lambdas</h1><p>Now, let’s explore an example and determine whether it involves a reference or an address:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">uint8_t</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    boost::asio::<span class="built_in">post</span>(io, [&amp;data]() &#123;</span><br><span class="line">        <span class="comment">// Use the captured &#x27;data&#x27; reference here</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Although my instinctive C brain would lean towards determining the address, in the realm of C++, this example demonstrates the concept of capturing references in lambdas. You can refer to the <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/lambda">C++ reference documentation</a> for more information.</p>
+<p>Lambdas in C++ enable you to capture variables from the surrounding scope. By capturing variables by reference, you can avoid unnecessary data copies and improve performance. In this particular case, the <code>&amp;</code> operator is employed to capture the variable <code>data</code> by reference in the lambda function passed to <code>boost::asio::post</code>. The captured reference to <code>data</code> remains valid throughout the execution of the lambda function.</p>
+<p>To ensure the validity of captured references throughout the asynchronous operation, it is crucial to manage their lifespan and avoid accessing invalidated references.</p>
+<h1 id="Passing-the-Address-of-a-Variable-to-a-Lambda"><a href="#Passing-the-Address-of-a-Variable-to-a-Lambda" class="headerlink" title="Passing the Address of a Variable to a Lambda"></a>Passing the Address of a Variable to a Lambda</h1><p>Having covered the topic of capturing references in lambdas, the next question arises: how can we pass the address of a variable to a lambda?</p>
+<p>To pass the address of a variable to a lambda, you can utilize the address-of operator <code>&amp;</code> as shown in the following example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">uint8_t</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    boost::asio::<span class="built_in">post</span>(io, [&amp;data]() &#123;</span><br><span class="line">        <span class="comment">// Use the address of &#x27;data&#x27; here</span></span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;data address: &quot;</span> &lt;&lt; <span class="built_in">static_cast</span>&lt;<span class="type">void</span>*&gt;(&amp;data) &lt;&lt; std::endl;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In this example, the lambda captures the variable <code>data</code> by reference and uses the address-of operator <code>&amp;</code> to obtain a pointer to <code>data</code> within the lambda body.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -790,7 +891,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -803,7 +904,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

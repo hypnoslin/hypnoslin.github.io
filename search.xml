@@ -242,4 +242,37 @@
         <tag>C++</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Understanding the Usage of the &amp; Operator in C++</title>
+    <url>/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/</url>
+    <content><![CDATA[<p>When working with the <code>&amp;</code> operator in the C language, besides bitwise, its usage is limited to taking the address of a specified variable. However, in C++, the <code>&amp;</code> operator serves two distinct purposes: taking the address of a variable and declaring a reference variable. To understand its purpose, it is crucial to consider the context in which the operator is used.</p>
+<h2 id="Taking-the-Address-of-a-Variable"><a href="#Taking-the-Address-of-a-Variable" class="headerlink" title="Taking the Address of a Variable"></a>Taking the Address of a Variable</h2><p>In C++, the <code>&amp;</code> operator allows you to access the memory location where a variable is stored when used to take the address of a variable. Consider the following example:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span>* px = &amp;x; <span class="comment">// &amp; used to take the address of x</span></span><br></pre></td></tr></table></figure>
+
+<p>In this case, the <code>&amp;</code> operator is employed to obtain the address of the variable <code>x</code> and assign it to the pointer variable <code>px</code>.</p>
+<h2 id="Declaring-a-Reference-Variable"><a href="#Declaring-a-Reference-Variable" class="headerlink" title="Declaring a Reference Variable"></a>Declaring a Reference Variable</h2><p>In addition to taking addresses, the <code>&amp;</code> operator can also be used to declare a reference variable. A reference provides an alternative name or alias for an existing variable. Take a look at this example:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span>&amp; rx = x; <span class="comment">// &amp; used to declare the reference variable rx</span></span><br></pre></td></tr></table></figure>
+
+<p>Here, the <code>&amp;</code> operator is utilized to declare the reference variable <code>rx</code>, which refers to the existing variable <code>x</code>. Any changes made to <code>rx</code> will directly affect the original variable <code>x</code>.</p>
+<h1 id="Capturing-References-in-Lambdas"><a href="#Capturing-References-in-Lambdas" class="headerlink" title="Capturing References in Lambdas"></a>Capturing References in Lambdas</h1><p>Now, let’s explore an example and determine whether it involves a reference or an address:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">uint8_t</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    boost::asio::<span class="built_in">post</span>(io, [&amp;data]() &#123;</span><br><span class="line">        <span class="comment">// Use the captured &#x27;data&#x27; reference here</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Although my instinctive C brain would lean towards determining the address, in the realm of C++, this example demonstrates the concept of capturing references in lambdas. You can refer to the <a href="https://en.cppreference.com/w/cpp/language/lambda">C++ reference documentation</a> for more information.</p>
+<p>Lambdas in C++ enable you to capture variables from the surrounding scope. By capturing variables by reference, you can avoid unnecessary data copies and improve performance. In this particular case, the <code>&amp;</code> operator is employed to capture the variable <code>data</code> by reference in the lambda function passed to <code>boost::asio::post</code>. The captured reference to <code>data</code> remains valid throughout the execution of the lambda function.</p>
+<p>To ensure the validity of captured references throughout the asynchronous operation, it is crucial to manage their lifespan and avoid accessing invalidated references.</p>
+<h1 id="Passing-the-Address-of-a-Variable-to-a-Lambda"><a href="#Passing-the-Address-of-a-Variable-to-a-Lambda" class="headerlink" title="Passing the Address of a Variable to a Lambda"></a>Passing the Address of a Variable to a Lambda</h1><p>Having covered the topic of capturing references in lambdas, the next question arises: how can we pass the address of a variable to a lambda?</p>
+<p>To pass the address of a variable to a lambda, you can utilize the address-of operator <code>&amp;</code> as shown in the following example:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">uint8_t</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    boost::asio::<span class="built_in">post</span>(io, [&amp;data]() &#123;</span><br><span class="line">        <span class="comment">// Use the address of &#x27;data&#x27; here</span></span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;data address: &quot;</span> &lt;&lt; <span class="built_in">static_cast</span>&lt;<span class="type">void</span>*&gt;(&amp;data) &lt;&lt; std::endl;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In this example, the lambda captures the variable <code>data</code> by reference and uses the address-of operator <code>&amp;</code> to obtain a pointer to <code>data</code> within the lambda body.</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Pointers</tag>
+        <tag>References</tag>
+      </tags>
+  </entry>
 </search>

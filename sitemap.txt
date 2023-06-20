@@ -1,3 +1,4 @@
+https://hypnoslin.github.io/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/
 https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/
 https://hypnoslin.github.io/2023/06/18/How-to-manually-switch-i2c-mux/
 https://hypnoslin.github.io/2023/06/18/How-to-test-performance-of-webui-vue-of-OpenBMC/
@@ -10,6 +11,8 @@ https://hypnoslin.github.io/
 https://hypnoslin.github.io/tags/OpenBMC/
 https://hypnoslin.github.io/tags/Linux/
 https://hypnoslin.github.io/tags/C/
+https://hypnoslin.github.io/tags/Pointers/
+https://hypnoslin.github.io/tags/References/
 https://hypnoslin.github.io/categories/OpenBMC/
 https://hypnoslin.github.io/categories/Linux/
 https://hypnoslin.github.io/categories/C/

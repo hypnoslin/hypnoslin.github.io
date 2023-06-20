@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"hypnoslin.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"top","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="When declaring a member variable in a class, you have the option to declare it as a reference or as a non-reference. Understanding the difference between these two types is crucial, as it affects how">
+  <meta name="description" content="When working with the &amp; operator in the C language, besides bitwise, its usage is limited to taking the address of a specified variable. However, in C++, the &amp; operator serves two distinct pur">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Understanding the Difference Between Reference and Non-Reference Members in a Class">
-<meta property="og:url" content="https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/index.html">
+<meta property="og:title" content="Understanding the Usage of the &amp; Operator in C++">
+<meta property="og:url" content="https://hypnoslin.github.io/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/index.html">
 <meta property="og:site_name" content="Cataholic">
-<meta property="og:description" content="When declaring a member variable in a class, you have the option to declare it as a reference or as a non-reference. Understanding the difference between these two types is crucial, as it affects how">
+<meta property="og:description" content="When working with the &amp; operator in the C language, besides bitwise, its usage is limited to taking the address of a specified variable. However, in C++, the &amp; operator serves two distinct pur">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-06-19T15:26:32.000Z">
-<meta property="article:modified_time" content="2023-06-19T16:09:49.588Z">
+<meta property="article:published_time" content="2023-06-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-20T15:52:02.976Z">
 <meta property="article:author" content="Albert Lin">
 <meta property="article:tag" content="C++">
+<meta property="article:tag" content="Pointers">
+<meta property="article:tag" content="References">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/">
+<link rel="canonical" href="https://hypnoslin.github.io/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>Understanding the Difference Between Reference and Non-Reference Members in a Class | Cataholic</title>
+  <title>Understanding the Usage of the & Operator in C++ | Cataholic</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0K7NVG4ZCN"></script>
     <script>
@@ -201,7 +203,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -214,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Understanding the Difference Between Reference and Non-Reference Members in a Class
+          Understanding the Usage of the & Operator in C++
         </h1>
 
         <div class="post-meta">
@@ -223,16 +225,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2023-06-19 23:26:32" itemprop="dateCreated datePublished" datetime="2023-06-19T23:26:32+08:00">2023-06-19</time>
+              <time title="Created: 2023-06-20 00:00:00 / Modified: 23:52:02" itemprop="dateCreated datePublished" datetime="2023-06-20T00:00:00+08:00">2023-06-20</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-06-20 00:09:49" itemprop="dateModified" datetime="2023-06-20T00:09:49+08:00">2023-06-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -259,8 +255,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2023/06/19/Difference-between-var-and-reference-var-in-class-member/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/19/Difference-between-var-and-reference-var-in-class-member/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -275,15 +271,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>When declaring a member variable in a class, you have the option to declare it as a <strong>reference</strong> or as a <strong>non-reference</strong>. Understanding the difference between these two types is crucial, as it affects how they are initialized within the class. </p>
-<p>Let’s dive into the dissimilarities between reference and non-reference members through an illustrative example:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span>&amp; ref_val, <span class="type">int</span> non_ref_val) : <span class="built_in">ref_val_</span>(ref_val), <span class="built_in">non_ref_val_</span>(non_ref_val) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span>&amp; ref_val_;</span><br><span class="line">    <span class="type">int</span> non_ref_val_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">42</span>; </span><br><span class="line">    <span class="function">MyClass <span class="title">my_class</span><span class="params">(x, <span class="number">10</span>)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>When working with the <code>&amp;</code> operator in the C language, besides bitwise, its usage is limited to taking the address of a specified variable. However, in C++, the <code>&amp;</code> operator serves two distinct purposes: taking the address of a variable and declaring a reference variable. To understand its purpose, it is crucial to consider the context in which the operator is used.</p>
+<h2 id="Taking-the-Address-of-a-Variable"><a href="#Taking-the-Address-of-a-Variable" class="headerlink" title="Taking the Address of a Variable"></a>Taking the Address of a Variable</h2><p>In C++, the <code>&amp;</code> operator allows you to access the memory location where a variable is stored when used to take the address of a variable. Consider the following example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span>* px = &amp;x; <span class="comment">// &amp; used to take the address of x</span></span><br></pre></td></tr></table></figure>
 
-<p>In the given example, we define a class called <code>MyClass</code> featuring two member variables: <code>ref_val_</code>, a reference to an integer, and <code>non_ref_val_</code>, a regular integer.</p>
-<p>The key disparity arises in the constructor. The <code>ref_val_</code> member is initialized in the constructor’s initialization list using the argument <code>ref_val</code>, which is a reference to an integer. This step is essential since a reference must be initialized upon declaration.</p>
-<p>One practical application of using reference members is when we want to <strong>associate an external object with the class without initializing it inside the class constructor</strong>. By initializing the reference member outside the class, we can control the lifetime and initialization of the referenced object separately.</p>
-<p>However, it’s crucial to ensure that the lifetime of the referenced object extends beyond the lifetime of the object holding the reference. In this case, if <code>x</code> is going to be used in <code>MyClass</code>, you should ensure that <code>x</code> remains in scope for the entire duration of <code>my_class</code>‘s lifetime. Failure to do so may lead to undefined behavior.</p>
-<p>Understanding the difference between reference and non-reference members helps you make informed decisions when designing your classes and ensures the proper usage and management of references within your codebase. It provides flexibility in managing object lifetimes and improves the overall design of your C++ classes.</p>
+<p>In this case, the <code>&amp;</code> operator is employed to obtain the address of the variable <code>x</code> and assign it to the pointer variable <code>px</code>.</p>
+<h2 id="Declaring-a-Reference-Variable"><a href="#Declaring-a-Reference-Variable" class="headerlink" title="Declaring a Reference Variable"></a>Declaring a Reference Variable</h2><p>In addition to taking addresses, the <code>&amp;</code> operator can also be used to declare a reference variable. A reference provides an alternative name or alias for an existing variable. Take a look at this example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span>&amp; rx = x; <span class="comment">// &amp; used to declare the reference variable rx</span></span><br></pre></td></tr></table></figure>
+
+<p>Here, the <code>&amp;</code> operator is utilized to declare the reference variable <code>rx</code>, which refers to the existing variable <code>x</code>. Any changes made to <code>rx</code> will directly affect the original variable <code>x</code>.</p>
+<h1 id="Capturing-References-in-Lambdas"><a href="#Capturing-References-in-Lambdas" class="headerlink" title="Capturing References in Lambdas"></a>Capturing References in Lambdas</h1><p>Now, let’s explore an example and determine whether it involves a reference or an address:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">uint8_t</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    boost::asio::<span class="built_in">post</span>(io, [&amp;data]() &#123;</span><br><span class="line">        <span class="comment">// Use the captured &#x27;data&#x27; reference here</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Although my instinctive C brain would lean towards determining the address, in the realm of C++, this example demonstrates the concept of capturing references in lambdas. You can refer to the <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/lambda">C++ reference documentation</a> for more information.</p>
+<p>Lambdas in C++ enable you to capture variables from the surrounding scope. By capturing variables by reference, you can avoid unnecessary data copies and improve performance. In this particular case, the <code>&amp;</code> operator is employed to capture the variable <code>data</code> by reference in the lambda function passed to <code>boost::asio::post</code>. The captured reference to <code>data</code> remains valid throughout the execution of the lambda function.</p>
+<p>To ensure the validity of captured references throughout the asynchronous operation, it is crucial to manage their lifespan and avoid accessing invalidated references.</p>
+<h1 id="Passing-the-Address-of-a-Variable-to-a-Lambda"><a href="#Passing-the-Address-of-a-Variable-to-a-Lambda" class="headerlink" title="Passing the Address of a Variable to a Lambda"></a>Passing the Address of a Variable to a Lambda</h1><p>Having covered the topic of capturing references in lambdas, the next question arises: how can we pass the address of a variable to a lambda?</p>
+<p>To pass the address of a variable to a lambda, you can utilize the address-of operator <code>&amp;</code> as shown in the following example:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">uint8_t</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    boost::asio::<span class="built_in">post</span>(io, [&amp;data]() &#123;</span><br><span class="line">        <span class="comment">// Use the address of &#x27;data&#x27; here</span></span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;data address: &quot;</span> &lt;&lt; <span class="built_in">static_cast</span>&lt;<span class="type">void</span>*&gt;(&amp;data) &lt;&lt; std::endl;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In this example, the lambda captures the variable <code>data</code> by reference and uses the address-of operator <code>&amp;</code> to obtain a pointer to <code>data</code> within the lambda body.</p>
 
     </div>
 
@@ -294,6 +301,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/Pointers/" rel="tag"># Pointers</a>
+              <a href="/tags/References/" rel="tag"># References</a>
           </div>
 
         
@@ -302,13 +311,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/06/18/How-to-manually-switch-i2c-mux/" rel="prev" title="How to Manually Switch PCA954X I2C Mux Channels">
-      <i class="fa fa-chevron-left"></i> How to Manually Switch PCA954X I2C Mux Channels
+    <a href="/2023/06/19/Difference-between-var-and-reference-var-in-class-member/" rel="prev" title="Understanding the Difference Between Reference and Non-Reference Members in a Class">
+      <i class="fa fa-chevron-left"></i> Understanding the Difference Between Reference and Non-Reference Members in a Class
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/" rel="next" title="Understanding the Usage of the & Operator in C++">
-      Understanding the Usage of the & Operator in C++ <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -374,6 +380,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Taking-the-Address-of-a-Variable"><span class="nav-number">1.</span> <span class="nav-text">Taking the Address of a Variable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Declaring-a-Reference-Variable"><span class="nav-number">2.</span> <span class="nav-text">Declaring a Reference Variable</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Capturing-References-in-Lambdas"><span class="nav-number"></span> <span class="nav-text">Capturing References in Lambdas</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Passing-the-Address-of-a-Variable-to-a-Lambda"><span class="nav-number"></span> <span class="nav-text">Passing the Address of a Variable to a Lambda</span></a></div>
       </div>
       <!--/noindex-->
 
@@ -522,9 +529,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://hypnoslin.github.io/2023/06/19/Difference-between-var-and-reference-var-in-class-member/";
-    this.page.identifier = "2023/06/19/Difference-between-var-and-reference-var-in-class-member/";
-    this.page.title = "Understanding the Difference Between Reference and Non-Reference Members in a Class";
+    this.page.url = "https://hypnoslin.github.io/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/";
+    this.page.identifier = "2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/";
+    this.page.title = "Understanding the Usage of the & Operator in C++";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
