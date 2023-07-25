@@ -195,6 +195,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/07/25/difference-of-public-syntax-of-inheritance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Albert Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cataholic">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/25/difference-of-public-syntax-of-inheritance/" class="post-title-link" itemprop="url">Understanding Public and Private Inheritance in C++</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-25 21:50:03 / Modified: 21:59:34" itemprop="dateCreated datePublished" datetime="2023-07-25T21:50:03+08:00">2023-07-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/07/25/difference-of-public-syntax-of-inheritance/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/07/25/difference-of-public-syntax-of-inheritance/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>In this article, we will explain the difference between the following code snippets:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">derived</span> : <span class="keyword">public</span> base</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">derived</span> : base</span><br></pre></td></tr></table></figure>
+
+<p>When defining a derived class in C++ that inherits from a base class, you have two different syntaxes to choose from: <code>class derived : public base</code> and <code>class derived : base</code>. These syntaxes determine the type of inheritance and have a significant impact on the accessibility of the base class members in the derived class.</p>
+<p>It is customary to see the <code>public</code> specifier used while inheriting a base class.</p>
+<h2 id="Public-Inheritance-class-derived-public-base"><a href="#Public-Inheritance-class-derived-public-base" class="headerlink" title="Public Inheritance: class derived : public base"></a>Public Inheritance: <code>class derived : public base</code></h2><p>The syntax <code>class derived : public base</code> represents public inheritance. With public inheritance, the public members of the base class <code>base</code> retain their access levels in the derived class <code>derived</code>. Public members remain accessible as public members, protected members remain accessible as protected members, and private members remain inaccessible. This preserves the original access levels of the base class members.</p>
+<h2 id="Private-Inheritance-class-derived-base"><a href="#Private-Inheritance-class-derived-base" class="headerlink" title="Private Inheritance: class derived : base"></a>Private Inheritance: <code>class derived : base</code></h2><p>The syntax <code>class derived : base</code> represents private inheritance by default. In private inheritance, both public and protected members of the base class <code>base</code> become private members in the derived class <code>derived</code>. Consequently, they are not directly accessible outside the class. Private members of the base class remain inaccessible as well.</p>
+<p>In most scenarios, it is preferred to use the explicit <code>public</code> keyword (<code>class derived : public base</code>) to specify public inheritance. This ensures that the access levels of the base class members are preserved in the derived class, making the code more readable and intuitive.</p>
+<p>By understanding the difference between these two inheritance types, you can make informed decisions when designing your class hierarchy in C++.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://hypnoslin.github.io/2023/06/20/whether-and-operator-is-for-address-or-reference-in-c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -891,7 +983,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -275,4 +275,26 @@
         <tag>References</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Understanding Public and Private Inheritance in C++</title>
+    <url>/2023/07/25/difference-of-public-syntax-of-inheritance/</url>
+    <content><![CDATA[<p>In this article, we will explain the difference between the following code snippets:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">derived</span> : <span class="keyword">public</span> base</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">derived</span> : base</span><br></pre></td></tr></table></figure>
+
+<p>When defining a derived class in C++ that inherits from a base class, you have two different syntaxes to choose from: <code>class derived : public base</code> and <code>class derived : base</code>. These syntaxes determine the type of inheritance and have a significant impact on the accessibility of the base class members in the derived class.</p>
+<p>It is customary to see the <code>public</code> specifier used while inheriting a base class.</p>
+<h2 id="Public-Inheritance-class-derived-public-base"><a href="#Public-Inheritance-class-derived-public-base" class="headerlink" title="Public Inheritance: class derived : public base"></a>Public Inheritance: <code>class derived : public base</code></h2><p>The syntax <code>class derived : public base</code> represents public inheritance. With public inheritance, the public members of the base class <code>base</code> retain their access levels in the derived class <code>derived</code>. Public members remain accessible as public members, protected members remain accessible as protected members, and private members remain inaccessible. This preserves the original access levels of the base class members.</p>
+<h2 id="Private-Inheritance-class-derived-base"><a href="#Private-Inheritance-class-derived-base" class="headerlink" title="Private Inheritance: class derived : base"></a>Private Inheritance: <code>class derived : base</code></h2><p>The syntax <code>class derived : base</code> represents private inheritance by default. In private inheritance, both public and protected members of the base class <code>base</code> become private members in the derived class <code>derived</code>. Consequently, they are not directly accessible outside the class. Private members of the base class remain inaccessible as well.</p>
+<p>In most scenarios, it is preferred to use the explicit <code>public</code> keyword (<code>class derived : public base</code>) to specify public inheritance. This ensures that the access levels of the base class members are preserved in the derived class, making the code more readable and intuitive.</p>
+<p>By understanding the difference between these two inheritance types, you can make informed decisions when designing your class hierarchy in C++.</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
 </search>
